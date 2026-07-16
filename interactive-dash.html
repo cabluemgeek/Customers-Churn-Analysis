@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Customer Churn Dashboard_items</title>
+<title>Customer Churn Dashboard</title>
 
 <style>
 
@@ -106,6 +106,12 @@ header p{
 
     margin-bottom:40px;
 
+    /* fixes the "small chart stuck in the corner" issue:
+       the card now grows to fill available width, and the
+       iframe below fills 100% of the card's actual box  */
+    display:flex;
+    flex-direction:column;
+
 }
 
 #graphTitle{
@@ -120,16 +126,40 @@ header p{
 
 /* ================= IFRAME ================= */
 
+.iframe-wrapper{
+    /* keeps a consistent, generous viewing area on large screens instead
+       of the iframe shrinking to whatever the chart's internal size is */
+    position:relative;
+    width:100%;
+    height:75vh;
+    min-height:500px;
+    max-height:850px;
+}
+
 iframe{
 
-    width:100%;
+    position:absolute;
+    top:0;
+    left:0;
 
-    height:850px;
+    width:100%;
+    height:100%;
 
     border:none;
 
     border-radius:8px;
 
+    display:block;
+
+}
+
+/* on smaller screens, give the chart a bit more breathing room
+   relative to the viewport so it doesn't feel cramped */
+@media (max-width:768px){
+    .iframe-wrapper{
+        height:60vh;
+        min-height:380px;
+    }
 }
 
 </style>
@@ -142,7 +172,7 @@ iframe{
 
 <h1>Customer Churn Prediction Dashboard</h1>
 
-<p>XGBoost Model Results & Exploratory Data Analysis</p>
+<p>XGBoost Model Results &amp; Exploratory Data Analysis</p>
 
 </header>
 
@@ -171,6 +201,11 @@ Age Distribution
 </button>
 
 <button class="toggle-btn"
+onclick="showGraph('Dashboard_items/churn_by_category.html',this)">
+Churn by Category
+</button>
+
+<button class="toggle-btn"
 onclick="showGraph('Dashboard_items/churn_distribution.html',this)">
 Churn Distribution
 </button>
@@ -185,6 +220,7 @@ Churn Distribution
 Confusion Matrix
 </h2>
 
+<div class="iframe-wrapper">
 <iframe
 
 id="graphFrame"
@@ -192,6 +228,7 @@ id="graphFrame"
 src="Dashboard_items/confusion_matrix.html">
 
 </iframe>
+</div>
 
 </div>
 
@@ -202,8 +239,10 @@ src="Dashboard_items/confusion_matrix.html">
 function showGraph(file, button){
 
     // Change graph
-
-    document.getElementById("graphFrame").src = file;
+    // "?v=" + Date.now() forces the browser to treat this as a brand-new
+    // URL every click, so it can never serve a cached copy of a previous
+    // chart instead of the one you just clicked
+    document.getElementById("graphFrame").src = file + "?v=" + Date.now();
 
     // Change title
 
