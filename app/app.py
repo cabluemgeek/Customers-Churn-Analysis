@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import joblib
 import plotly.graph_objects as go
+import os
 
 # ------------------------------------------------------------
 # Page setup
@@ -19,10 +20,13 @@ st.write(
 # Load the trained model + the exact feature schema it expects
 # (both files must sit in the same folder as this app.py)
 # ------------------------------------------------------------
-@st.cache_resource   # loads the model once and reuses it across user sessions, instead of reloading every run
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+@st.cache_resource
 def load_model():
-    model = joblib.load("churn_model.pkl")
-    feature_columns = joblib.load("feature_columns.pkl")
+    model = joblib.load(os.path.join(BASE_DIR, "churn_model.pkl"))
+    feature_columns = joblib.load(os.path.join(BASE_DIR, "feature_columns.pkl"))
     return model, feature_columns
 
 model, feature_columns = load_model()
