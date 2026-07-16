@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Customer Churn Dashboard</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f4f6fb;
+}
+
+/* ================= HEADER ================= */
+
+header{
+    background:#1f4e79;
+    color:white;
+    text-align:center;
+    padding:25px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.2);
+}
+
+header h1{
+    margin-bottom:8px;
+}
+
+header p{
+    opacity:0.9;
+    font-size:17px;
+}
+
+/* ================= BUTTONS ================= */
+
+.button-container{
+
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+
+    gap:12px;
+
+    padding:25px;
+}
+
+.toggle-btn{
+
+    padding:12px 22px;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    background:#e5e5e5;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    transition:.3s;
+}
+
+.toggle-btn:hover{
+
+    background:#d4d4d4;
+
+}
+
+.toggle-btn.active{
+
+    background:#1f77b4;
+
+    color:white;
+
+}
+
+/* ================= CARD ================= */
+
+.card{
+
+    width:95%;
+
+    max-width:1400px;
+
+    margin:auto;
+
+    background:white;
+
+    border-radius:10px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+
+    padding:20px;
+
+    margin-bottom:40px;
+
+}
+
+#graphTitle{
+
+    text-align:center;
+
+    color:#1f4e79;
+
+    margin-bottom:20px;
+
+}
+
+/* ================= IFRAME ================= */
+
+iframe{
+
+    width:100%;
+
+    height:850px;
+
+    border:none;
+
+    border-radius:8px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>Customer Churn Prediction Dashboard</h1>
+
+<p>XGBoost Model Results & Exploratory Data Analysis</p>
+
+</header>
+
+<!-- ================= BUTTONS ================= -->
+
+<div class="button-container">
+
+<button class="toggle-btn active"
+onclick="showGraph('Dashboard/confusion_matrix.html',this)">
+Confusion Matrix
+</button>
+
+<button class="toggle-btn"
+onclick="showGraph('Dashboard/roc_curve.html',this)">
+ROC Curve
+</button>
+
+<button class="toggle-btn"
+onclick="showGraph('Dashboard/correlation_heatmap.html',this)">
+Correlation Heatmap
+</button>
+
+<button class="toggle-btn"
+onclick="showGraph('Dashboard/age_distribution.html',this)">
+Age Distribution
+</button>
+
+<button class="toggle-btn"
+onclick="showGraph('Dashboard/churn_distribution.html',this)">
+Churn Distribution
+</button>
+
+</div>
+
+<!-- ================= GRAPH CARD ================= -->
+
+<div class="card">
+
+<h2 id="graphTitle">
+Confusion Matrix
+</h2>
+
+<iframe
+
+id="graphFrame"
+
+src="Dashboard/confusion_matrix.html">
+
+</iframe>
+
+</div>
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+function showGraph(file, button){
+
+    // Change graph
+
+    document.getElementById("graphFrame").src = file;
+
+    // Change title
+
+    document.getElementById("graphTitle").innerText = button.innerText;
+
+    // Remove active button
+
+    let buttons = document.querySelectorAll(".toggle-btn");
+
+    buttons.forEach(btn => btn.classList.remove("active"));
+
+    // Highlight clicked button
+
+    button.classList.add("active");
+
+}
+
+</script>
+
+</body>
+
+</html>
